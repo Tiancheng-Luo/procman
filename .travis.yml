@@ -1,9 +1,27 @@
-language: rust
-rust:
-  - stable
-  - beta
-  - nightly
-matrix:
-  allow_failures:
-    - rust: nightly
-  fast_finish: true
+os:
+  - linux
+  - osx
+
+language: nix
+
+sudo: required
+
+git:
+  depth: 4
+
+env:
+  global:
+    - ALL_TESTS=yes
+    - secure: "dm6I+M4+V+C7QMTpcSADdKPE633SvmToXZrTbZ7miNDGmMN+/SfHeN2ybi1+PW6oViMlbPN/7J/aEfiGjSJI8vLk72Y4uCWGmpSb8TXZLu6+whnxtZzzW8+z4tsM4048QJg7CF3N/25U8thRFgs3DqUub1Sf3nG9LrNWdz6ZcDQ="
+
+before_script:
+  - sudo mount -o remount,exec,size=4G,mode=755 /run/user || true
+  - sudo mkdir -p /etc/nix
+  - echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
+  - sudo launchctl kickstart -k system/org.nixos.nix-daemon || true
+
+script:
+  - nix-env -iA cachix -f https://cachix.org/api/v1/install
+  - cachix use procman
+  - cachix push procman --watch-store&
+  - nix-build | cachix push procman
