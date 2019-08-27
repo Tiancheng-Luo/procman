@@ -1,27 +1,22 @@
 os:
-  - linux
-  - osx
-
+- linux
+- osx
 language: nix
-
 sudo: required
-
 git:
   depth: 4
-
 env:
   global:
-    - ALL_TESTS=yes
-    - secure: dm6I+M4+V+C7QMTpcSADdKPE633SvmToXZrTbZ7miNDGmMN+/SfHeN2ybi1+PW6oViMlbPN/7J/aEfiGjSJI8vLk72Y4uCWGmpSb8TXZLu6+whnxtZzzW8+z4tsM4048QJg7CF3N/25U8thRFgs3DqUub1Sf3nG9LrNWdz6ZcDQ=
-
+  - ALL_TESTS=yes
+  - secure: dm6I+M4+V+C7QMTpcSADdKPE633SvmToXZrTbZ7miNDGmMN+/SfHeN2ybi1+PW6oViMlbPN/7J/aEfiGjSJI8vLk72Y4uCWGmpSb8TXZLu6+whnxtZzzW8+z4tsM4048QJg7CF3N/25U8thRFgs3DqUub1Sf3nG9LrNWdz6ZcDQ=
+  - secure: R66wcvL9Hh5pXRFJHl7LtAAouKWPkYIK4GxNEpC0/vEZDCpjnJt6m1DfsSEaRRcpAmsGGWQ8uKqORKqde8dnUZSm6iIpr7/QR/gCwngkpgDFG5/E5OqfeUs3rZ7msX6LWMquxqXIDXjcP11EufJoNtvR3V9xp8BdtiDoocqu56d6oDmlmLDgbIth9Cd25yFEhgxI4EVpgh4DkjnMY78swWJScAcT2hXiD8QX2kijNoxPIgQBIm33mwQm9I3LzReBNiXYSrz1Huj4YWqEVXs5ja7ZzmD4k7afVDJz4Lo4EtQTwoQWzOFa/yvJ4lpfd+xEvQaHy5T9QKc8wGru7ki7GJeAYfkNUDJFwpdMnnqtOwaoDLYyRKagJJgpTBy9rLTg2+KUKY+CNsENOGQE20AhW5dBU2xh3t4QctUGs+U6Ty53ka/kEveAI3TEA5+F4mjKpdRzYOes8jx31vYFvgwVpqgmpgdOsNAnjiLG6UDmdGXjJi9R1JrZhmZXHVS1Aj9YynjwzMlDQ5RM8p3hWSrooLWj/iNv2Z8dbWOe63qfqgMMQ2acVG2TVj5JgEpsxQ3+Xr+xlQdL5sYIu99HuS3w/Zfjskxi+vJ8Bl1/MBxPerHrDYy9OijK2oPjvX/nQxviYm159CSpu1GlBlhK+GClw+hTzXcXTGRn4X8fl98sTt4=
 before_script:
-  - sudo mount -o remount,exec,size=4G,mode=755 /run/user || true
-  - sudo mkdir -p /etc/nix
-  - echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
-  - sudo launchctl kickstart -k system/org.nixos.nix-daemon || true
-
+- sudo mount -o remount,exec,size=4G,mode=755 /run/user || true
+- sudo mkdir -p /etc/nix
+- echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
+- sudo launchctl kickstart -k system/org.nixos.nix-daemon || true
 script:
-  - nix-env -iA cachix -f https://cachix.org/api/v1/install
-  - cachix use procman
-  - cachix push procman --watch-store&
-  - nix-build | cachix push procman
+- nix-env -iA cachix -f https://cachix.org/api/v1/install
+- cachix use procman
+- cachix push procman --watch-store&
+- nix-build | cachix push procman
